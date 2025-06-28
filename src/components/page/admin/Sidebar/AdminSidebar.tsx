@@ -15,7 +15,7 @@ const AdminSidebar = () => {
   // Kích hoạt liên kết dựa trên pathname
   const isActive = (href: string) => {
     // Kích hoạt /admin/users khi vào /admin hoặc /admin/users
-    if (href === '/admin/genres' && (pathname === '/admin' || pathname === '/admin/users')) {
+    if (pathname === '/admin' && href === '/admin/users') {
       return true;
     }
     return pathname === href;

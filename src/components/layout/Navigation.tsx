@@ -107,7 +107,7 @@ export default function Navigation() {
 
   const navigateToAdmin = () => {
     setIsDropdownOpen(false);
-    router.push('/admin');
+    router.push('/admin/users');
   };
 
   const getInitials = (username: string): string => {
