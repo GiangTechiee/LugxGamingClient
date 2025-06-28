@@ -17,7 +17,7 @@ const pageComponents: { [key: string]: React.ComponentType } = {
   invoices: PaymentPage,
 };
 
-export default async function AdminPage({ params }: { params: { slug?: string[] } }) {
+export default async function AdminPage({ params }: { params: Promise<{ slug?: string[] }> }) {
   // Await params before using its properties
   const resolvedParams = await params;
   const slug = resolvedParams.slug?.[0];
