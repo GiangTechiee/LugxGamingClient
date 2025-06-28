@@ -1,21 +1,13 @@
 import AuthUI from "@/components/page/auth/AuthUI";
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { VALID_AUTH_ROUTES, ValidAuthRoute } from "../../../../constants/auth";
 
 interface AuthPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
-
-const VALID_AUTH_ROUTES = [
-  'login',
-  'register', 
-  'reset-password',
-  'confirm-reset-password'
-] as const;
-
-type ValidAuthRoute = typeof VALID_AUTH_ROUTES[number];
 
 export async function generateMetadata({ params }: AuthPageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -70,5 +62,3 @@ export default async function AuthPage({ params }: AuthPageProps) {
 
   return <AuthUI slug={slug} />;
 }
-
-export { VALID_AUTH_ROUTES, type ValidAuthRoute };
