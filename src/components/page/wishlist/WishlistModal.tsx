@@ -19,25 +19,25 @@ export default function WishlistModal({ isOpen, onClose, user }: WishlistModalPr
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const fetchWishlistItems = async () => {
+      if (!user) return;
+
+      setLoading(true);
+      try {
+        const response = await wishlistService.getWishlistByUser(user.user_id);
+        setWishlistItems(response.data);
+      } catch (error) {
+        console.error('Error fetching wishlist:', error);
+        toast.error('Không thể tải danh sách yêu thích');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (isOpen && user) {
       fetchWishlistItems();
     }
   }, [isOpen, user]);
-
-  const fetchWishlistItems = async () => {
-    if (!user) return;
-
-    setLoading(true);
-    try {
-      const response = await wishlistService.getWishlistByUser(user.user_id);
-      setWishlistItems(response.data);
-    } catch (error) {
-      console.error('Error fetching wishlist:', error);
-      toast.error('Không thể tải danh sách yêu thích');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleRemoveFromWishlist = async (gameId: number) => {
     if (!user) return;

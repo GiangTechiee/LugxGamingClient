@@ -35,8 +35,8 @@ export const useWishlist = (game_id: number) => {
         const wishlists = response.data;
         const isGameInWishlist = wishlists.some((wishlist: Wishlist) => wishlist.game_id === game_id);
         setIsInWishlist(isGameInWishlist);
-      } catch (error: any) {
-        console.error('Lỗi khi kiểm tra wishlist:', error.message);
+      } catch {
+        console.error('Lỗi khi kiểm tra wishlist');
       } finally {
         setIsCheckingWishlist(false);
       }
@@ -105,9 +105,9 @@ export const useWishlist = (game_id: number) => {
       }
 
       window.dispatchEvent(new CustomEvent('wishlist-updated'));
-    } catch (error: any) {
+    } catch {
       toast.dismiss(loadingToast);
-      const errorMessage = error?.message || 'Có lỗi xảy ra khi quản lý wishlist';
+      const errorMessage = 'Có lỗi xảy ra khi quản lý wishlist';
       toast.error(errorMessage, {
         duration: 3000,
         position: 'bottom-center',

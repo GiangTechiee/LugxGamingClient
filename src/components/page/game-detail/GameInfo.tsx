@@ -2,9 +2,9 @@
 
 import { Star, Flame, ShoppingCart, CreditCard, CheckIcon } from "lucide-react";
 import { GameDetail } from "@/types/game";
-import { useCart } from '@/hooks/useCart';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
+import { useCart } from "@/hooks/useCart";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface GameInfoProps {
   game: GameDetail;
@@ -34,50 +34,49 @@ const GameInfo = ({ game }: GameInfoProps) => {
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    const token = localStorage.getItem('access_token');
+
+    const token = localStorage.getItem("access_token");
     if (!token) {
-      toast.error('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng', {
+      toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng", {
         duration: 3000,
-        position: 'bottom-center',
+        position: "bottom-center",
       });
       return;
     }
 
     if (isAdding || justAdded) return;
 
-    const loadingToast = toast.loading('Đang thêm vào giỏ hàng...', {
-      position: 'bottom-center',
+    const loadingToast = toast.loading("Đang thêm vào giỏ hàng...", {
+      position: "bottom-center",
     });
 
     try {
       setIsAdding(true);
       await addToCart(game.game_id);
-      
+
       toast.dismiss(loadingToast);
       toast.success(`Đã thêm "${game.title}" vào giỏ hàng!`, {
         duration: 3000,
-        position: 'bottom-center',
-        icon: '🛒',
+        position: "bottom-center",
+        icon: "🛒",
       });
-      
+
       setJustAdded(true);
-      window.dispatchEvent(new CustomEvent('cart-updated'));
-      
+      window.dispatchEvent(new CustomEvent("cart-updated"));
+
       setTimeout(() => {
         setJustAdded(false);
       }, 2000);
-      
-    } catch (error: any) {
+    } catch {
       toast.dismiss(loadingToast);
-      
+
       // Xử lý lỗi từ backend
-      const errorMessage = error?.response?.data?.message || error?.message || 'Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng';
-      
+      const errorMessage = "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng";
+
       toast.error(errorMessage, {
         duration: 3000,
-        position: 'bottom-center',
-        icon: '❌',
+        position: "bottom-center",
+        icon: "❌",
       });
     } finally {
       setIsAdding(false);
@@ -115,24 +114,29 @@ const GameInfo = ({ game }: GameInfoProps) => {
   const getAddToCartButtonState = () => {
     if (isAdding) {
       return {
-        className: 'w-full bg-gray-600 cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2',
-        text: 'Đang thêm...',
-        icon: <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+        className:
+          "w-full bg-gray-600 cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2",
+        text: "Đang thêm...",
+        icon: (
+          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+        ),
       };
     }
-    
+
     if (justAdded) {
       return {
-        className: 'w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2',
-        text: 'Đã thêm vào giỏ hàng',
-        icon: <CheckIcon className="w-5 h-5" />
+        className:
+          "w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2",
+        text: "Đã thêm vào giỏ hàng",
+        icon: <CheckIcon className="w-5 h-5" />,
       };
     }
-    
+
     return {
-      className: 'w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2',
-      text: 'Thêm vào giỏ',
-      icon: <ShoppingCart className="w-5 h-5" />
+      className:
+        "w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2",
+      text: "Thêm vào giỏ",
+      icon: <ShoppingCart className="w-5 h-5" />,
     };
   };
 

@@ -14,12 +14,12 @@ export function EmailConfirmation({ email, onBackToRegister, onGoToLogin }: Emai
           </svg>
         </div>
         
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+        <h2 className="text-2xl font-bold text-white mb-4">
           Kiểm tra email của bạn
         </h2>
         
-        <p className="text-gray-600 mb-6 leading-relaxed">
-          Chúng tôi đã gửi một liên kết xác nhận đến <span className="font-semibold text-gray-800">{email}</span>. 
+        <p className="text-white mb-6 leading-relaxed">
+          Chúng tôi đã gửi một liên kết xác nhận đến <span className="font-semibold text-blue-300">{email}</span>. 
           Vui lòng kiểm tra hộp thư đến (bao gồm cả thư mục spam) và nhấp vào liên kết để kích hoạt tài khoản của bạn.
         </p>
         
@@ -33,13 +33,13 @@ export function EmailConfirmation({ email, onBackToRegister, onGoToLogin }: Emai
           
           <button
             onClick={onGoToLogin}
-            className="w-full bg-transparent border border-gray-300 hover:bg-white/50 text-gray-700 font-medium py-3 px-4 rounded-lg transition duration-200"
+            className="w-full bg-transparent border border-gray-300 hover:bg-white/50 text-white font-medium py-3 px-4 rounded-lg transition duration-200"
           >
             Đến trang đăng nhập
           </button>
         </div>
         
-        <p className="text-sm text-gray-500 mt-6">
+        <p className="text-sm text-white mt-6">
           Không nhận được email? Kiểm tra thư mục spam hoặc thử đăng ký lại sau vài phút.
         </p>
       </div>

@@ -63,13 +63,10 @@ const GameCard = ({ game }: { game: Game }) => {
       setTimeout(() => {
         setJustAdded(false);
       }, 2000);
-    } catch (error: any) {
+    } catch {
       toast.dismiss(loadingToast);
 
-      const errorMessage =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng";
+      const errorMessage = "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng";
 
       toast.error(errorMessage, {
         duration: 3000,
