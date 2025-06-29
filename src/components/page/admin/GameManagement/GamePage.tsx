@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { Game } from '@/types/game';
 import GameCard from './GameCard';
 import GameModal from './GameModal/GameModal';
-import { apiClient } from '@/lib/api-client';
+import LoadMoreButton from '../../game-list/LoadMoreButton';
+import { gameService } from '@/services/gameService';
 import toast from 'react-hot-toast';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
@@ -12,19 +13,37 @@ const GamePage = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [skip, setSkip] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const take = 12; // Số lượng game mỗi lần tải
 
-  const fetchGames = async () => {
+  const fetchGames = async (take: number, skip: number, append = false) => {
     try {
-      const response = await apiClient.get<Game[]>('games');
-      setGames(response.data);
+      const response = await gameService.getGames(take, skip);
+      const newGames = response.data;
+
+      // Nếu append, thêm game mới vào danh sách hiện tại
+      setGames((prev) => (append ? [...prev, ...newGames] : newGames));
+
+      // Kiểm tra xem còn game để tải không
+      setHasMore(newGames.length === take);
     } catch {
       toast.error('Lỗi khi tải danh sách game');
+      setHasMore(false);
     }
   };
 
+  // Tải game lần đầu khi component mount
   useEffect(() => {
-    fetchGames();
+    fetchGames(take, 0);
   }, []);
+
+  // Xử lý nút "Xem thêm"
+  const handleLoadMore = () => {
+    const newSkip = skip + take;
+    setSkip(newSkip);
+    fetchGames(take, newSkip, true);
+  };
 
   const handleAddGame = () => {
     setSelectedGame(null);
@@ -41,7 +60,7 @@ const GamePage = () => {
 
     const loadingToast = toast.loading('Đang xóa game...');
     try {
-      await apiClient.delete(`games/${gameId}`);
+      await gameService.deleteGame(gameId);
       setGames(games.filter((game) => game.game_id !== gameId));
       toast.dismiss(loadingToast);
       toast.success('Xóa game thành công');
@@ -52,7 +71,9 @@ const GamePage = () => {
   };
 
   const handleSaveGame = async () => {
-    await fetchGames();
+    await fetchGames(take, 0); // Tải lại danh sách từ đầu
+    setSkip(0); // Reset skip
+    setHasMore(true); // Reset hasMore
     setIsModalOpen(false);
   };
 
@@ -79,6 +100,12 @@ const GamePage = () => {
           />
         ))}
       </div>
+
+      {hasMore && (
+        <div className="flex justify-center mt-6">
+          <LoadMoreButton onClick={handleLoadMore} />
+        </div>
+      )}
 
       <GameModal
         isOpen={isModalOpen}

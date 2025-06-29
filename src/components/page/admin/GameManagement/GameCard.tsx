@@ -3,7 +3,7 @@
 import { Game } from '@/types/game';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from 'lucide-react';
 import { SiPlaystation, SiApple, SiAndroid } from 'react-icons/si';
 import { AiFillAppstore } from 'react-icons/ai';
 import { FaXbox } from 'react-icons/fa';
@@ -47,6 +47,9 @@ const GameCard = ({ game, onEdit, onDelete }: GameCardProps) => {
     return (price / 1000).toLocaleString('vi-VN') + ' VNĐ';
   };
 
+  // Hình ảnh mặc định nếu thumbnail không hợp lệ
+  const defaultImage = '/images/vercel.svg';
+
   return (
     <motion.div
       className="bg-gray-800 rounded-lg overflow-hidden flex flex-col h-full w-full"
@@ -56,14 +59,25 @@ const GameCard = ({ game, onEdit, onDelete }: GameCardProps) => {
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
     >
       <div className="relative w-full flex-shrink-0 aspect-video">
-        <Image
-          src={game.thumbnail}
-          alt={game.title}
-          fill
-          style={{ objectFit: 'cover' }}
-          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-          priority
-        />
+        {game.thumbnail && game.thumbnail !== '' ? (
+          <Image
+            src={game.thumbnail}
+            alt={game.title}
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+            priority
+          />
+        ) : (
+          <Image
+            src={defaultImage}
+            alt="Hình ảnh mặc định"
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+            priority
+          />
+        )}
       </div>
 
       <div className="p-3 flex flex-col flex-1">
