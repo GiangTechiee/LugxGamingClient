@@ -45,14 +45,14 @@ export default function Home() {
 
   return (
     <motion.div
-      className="relative w-screen h-screen overflow-hidden"
+      className="relative w-screen h-screen overflow-hidden max-sm:overflow-auto max-sm:min-h-screen"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <video
         ref={videoRef}
-        className={`${styles.video} object-cover`}
+        className={`${styles.video} object-cover w-full h-screen`}
         autoPlay
         loop
         muted
@@ -62,35 +62,13 @@ export default function Home() {
         Your browser does not support the video tag.
       </video>
       <motion.div
-        className="fixed top-1/4 left-0 right-0 flex flex-col sm:flex-row sm:justify-between items-center sm:items-start px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10"
+        className="absolute top-1/4 left-0 right-0 flex flex-col sm:flex-row sm:justify-between items-center sm:items-start pt-20 sm:px-6 lg:px-8 max-w-7xl mx-auto z-20 max-sm:absolute max-sm:top-4 max-sm:z-30"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
         <QuickNavigation />
         <WebsiteInfo />
-      </motion.div>
-      <motion.div
-        className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 text-white text-center"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.5 }}
-      >
-        <motion.h1
-          className="text-5xl md:text-6xl font-bold mb-4"
-          initial={{ scale: 0.8 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          Chào mừng đến với trang của bạn
-        </motion.h1>
-        <motion.button
-          className="px-6 py-3 text-lg bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Khám phá ngay
-        </motion.button>
       </motion.div>
     </motion.div>
   );

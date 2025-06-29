@@ -63,7 +63,7 @@ export default function QuickNavigation() {
             href="/tip"
             className={`${styles.navLink} block px-4 py-2 rounded-full bg-white text-black hover:bg-blue-600 hover:text-white transition-all duration-200`}
           >
-            Thủ thuật
+            Voucher
           </Link>
         </li>
       </ul>
