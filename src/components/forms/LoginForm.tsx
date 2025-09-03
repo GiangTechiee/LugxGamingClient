@@ -27,6 +27,20 @@ export function LoginForm() {
     }
   };
 
+  const handleDemoLogin = async () => {
+    const demoCredentials: LoginCredentials = {
+      email: 'giangtt8726@gmail.com',
+      password: 'Giang@1234'
+    };
+    
+    setFormData(demoCredentials);
+    
+    const success = await login(demoCredentials);
+    if (success) {
+      router.push('/');
+    }
+  };
+
   const handleInputChange = (field: keyof LoginCredentials, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     validateField(field, value, formData);
@@ -104,6 +118,24 @@ export function LoginForm() {
             </>
           ) : (
             'Đăng nhập'
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleDemoLogin}
+          disabled={isLoading}
+          className={`w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-full transition duration-200 flex items-center justify-center ${
+            isLoading ? 'opacity-70 cursor-not-allowed' : ''
+          }`}
+        >
+          {isLoading ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+              Đang đăng nhập demo...
+            </>
+          ) : (
+            'Đăng nhập Demo'
           )}
         </button>
       </form>
